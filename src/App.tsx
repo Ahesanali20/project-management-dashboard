@@ -2,17 +2,49 @@ import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import { initialTasks } from "./data/tasks";
 import { getTaskStats } from "./utils/taskStats";
+import {
+  priorityFilterOptions,
+  statusFilterOptions,
+  filterTasks,
+} from "./utils/taskFilters";
 import type { Task } from "./types/tasks";
 import TaskList from "./components/TaskList";
+
+type StatusFilter = (typeof statusFilterOptions)[number]["value"];
+type PriorityFilter = (typeof priorityFilterOptions)[number]["value"];
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [searchTask, setSearchTask] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
+  const [selectedPriority, setSelectedPriority] =
+    useState<PriorityFilter>("all");
   const taskStats = getTaskStats(tasks);
 
-  const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchTask.trim().toLowerCase()),
+  const filteredTasks = filterTasks(
+    tasks,
+    searchTask,
+    selectedStatus,
+    selectedPriority,
   );
+
+  const toggleTaskStatus = (taskId: number) => {
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              status:
+                task.status === "todo"
+                  ? "in-progress"
+                  : task.status === "in-progress"
+                    ? "done"
+                    : "todo",
+            }
+          : task,
+      ),
+    );
+  };
 
   const stats = [
     {
@@ -33,24 +65,6 @@ function App() {
     { label: "Overdue", value: taskStats.overdue, detail: "Need attention" },
   ];
 
-  function toggleTaskStatus(taskId: number) {
-    setTasks((currentTasks) =>
-      currentTasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              status:
-                task.status === "todo"
-                  ? "in-progress"
-                  : task.status === "in-progress"
-                    ? "done"
-                    : "todo",
-            }
-          : task,
-      ),
-    );
-  }
-
   return (
     <div className="flex min-h-screen bg-page font-sans text-text-main">
       <Sidebar />
@@ -65,6 +79,34 @@ function App() {
           </div>
 
           <div className="flex items-center gap-3">
+            <select
+              value={selectedStatus}
+              onChange={(event) =>
+                setSelectedStatus(event.target.value as StatusFilter)
+              }
+              className="rounded-lg border border-border bg-surface px-3 py-2 text-sm"
+            >
+              {statusFilterOptions.map((status) => (
+                <option key={status.id} value={status.value}>
+                  {status.label}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedPriority}
+              onChange={(event) =>
+                setSelectedPriority(event.target.value as PriorityFilter)
+              }
+              className="rounded-lg border border-border bg-surface px-3 py-2 text-sm"
+            >
+              {priorityFilterOptions.map((priority) => (
+                <option key={priority.id} value={priority.value}>
+                  {priority.label}
+                </option>
+              ))}
+            </select>
+
             <input
               type="search"
               placeholder="Search tasks..."
