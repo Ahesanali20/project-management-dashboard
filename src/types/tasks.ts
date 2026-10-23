@@ -11,4 +11,4 @@ export type Task = {
   assignee: string;
 };
 
-
+export type NewTaskData = Omit<Task, "id">;

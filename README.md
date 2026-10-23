@@ -1,32 +1,47 @@
-# React + TypeScript + Vite
+# TaskFlow — Project Management Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A responsive task dashboard for creating and managing work, tracking progress, and finding tasks with combined search and filters.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Create, edit, delete, and cycle tasks through to do, in progress, and done
+- Required-field validation with accessible error messages
+- Search task titles and combine status and priority filters
+- Statistics for total, completed, in-progress, and overdue tasks
+- Local storage persistence with safe fallback for invalid saved data
+- Responsive layout with mobile-friendly task table scrolling
+- Emerald theme, status and priority badges, and a no-results state
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 · TypeScript · Vite · Tailwind CSS v4 · Oxlint
 
-## Expanding the Oxlint configuration
+## Run locally
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+git clone https://github.com/Ahesanali20/project-management-dashboard.git
+cd project-management-dashboard
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Quality checks
+
+```bash
+npm run build
+npm run lint
+```
+
+There is currently no automated test script configured.
+
+## Screenshots
+
+Add desktop and mobile screenshots here after capturing the running dashboard.
+
+## Deploy
+
+Import this GitHub repository into [Vercel](https://vercel.com/), keep the framework preset as **Vite**, and deploy with the default build command (`npm run build`) and output directory (`dist`). Future pushes to `main` will trigger new deployments.
+
+## Portfolio description
+
+TaskFlow is a responsive project management dashboard built with typed React components. It demonstrates task lifecycle management, combined filtering, local persistence, accessible form validation, and at-a-glance delivery statistics.

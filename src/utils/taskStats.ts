@@ -1,21 +1,18 @@
 import type { Task } from "../types/tasks";
 
-function getStartOfToday() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return today;
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
-const today = getStartOfToday();
 
 export function getTaskStats(tasks: Task[]) {
   const total = tasks.length;
   const completed = tasks.filter((task) => task.status === "done").length;
-  const inProgress = tasks.filter(
-    (task) => task.status === "in-progress",
-  ).length;
-  const overdue = tasks.filter(
-    (task) => task.status !== "done" && new Date(task.dueDate) < today,
-  ).length;
+  const inProgress = tasks.filter((task) => task.status === "in-progress").length;
+  const today = getLocalDateString();
+  const overdue = tasks.filter((task) => Boolean(task.dueDate) && task.status !== "done" && task.dueDate < today).length;
 
   return { total, completed, inProgress, overdue };
 }
